@@ -1,0 +1,27 @@
+<h1>{{ id ? 'Edit Book' : 'Add Book' }}</h1>
+<form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label>Title:</label>
+    <input formControlName="title">
+    <div *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched">Title is required.</div>
+  </div>
+  <div>
+    <label>Author:</label>
+    <input formControlName="author">
+    <div *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched">Author is required.</div>
+  </div>
+  <div>
+    <label>Year:</label>
+    <input formControlName="year" type="number">
+    <div *ngIf="bookForm.get('year')?.invalid && bookForm.get('year')?.touched">Year is required and must be a number.</div>
+  </div>
+  <div>
+    <label>Cover Image:</label>
+    <input type="file" (change)="onFileChange($event)" accept="image/png,image/jpeg,image/jpg">
+    <div *ngIf="id && bookForm.get('cover_image')?.value">
+      <img [src]="getImageUrl(bookForm.get('cover_image')?.value)" alt="Current cover" width="100" height="100" />
+    </div>
+  </div>
+  <button type="submit" [disabled]="bookForm.invalid && !file">Save</button>
+  <button type="button" (click)="cancel()">Cancel</button>
+</form>
