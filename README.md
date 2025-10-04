@@ -42,7 +42,6 @@ project/
 │
 ├─ backend/
 │  ├─ app.py
-│  ├─ models.py
 │  ├─ requirements.txt
 │  └─ Dockerfile
 │
