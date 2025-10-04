@@ -5,7 +5,7 @@
 Mini application CRUD pour gérer une collection de livres :
 - Front-end Angular 16
 - Back-end Flask RESTful
-- Base de données SQLite
+- Base de données PostgeSql Nean db (online database)
 - Déploiement via Docker
 
 ---
@@ -25,7 +25,7 @@ Mini application CRUD pour gérer une collection de livres :
   - `PUT /books/<id>` – Modifier un livre
   - `DELETE /books/<id>` – Supprimer un livre
 - ORM : SQLAlchemy
-- Base de données : SQLite
+- Base de données : PostgeSql Nean db (online database)
 
 ---
 
