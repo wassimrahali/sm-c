@@ -1,27 +1,51 @@
-<h1>{{ id ? 'Edit Book' : 'Add Book' }}</h1>
-<form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label>Title:</label>
-    <input formControlName="title">
-    <div *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched">Title is required.</div>
-  </div>
-  <div>
-    <label>Author:</label>
-    <input formControlName="author">
-    <div *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched">Author is required.</div>
-  </div>
-  <div>
-    <label>Year:</label>
-    <input formControlName="year" type="number">
-    <div *ngIf="bookForm.get('year')?.invalid && bookForm.get('year')?.touched">Year is required and must be a number.</div>
-  </div>
-  <div>
-    <label>Cover Image:</label>
-    <input type="file" (change)="onFileChange($event)" accept="image/png,image/jpeg,image/jpg">
-    <div *ngIf="id && bookForm.get('cover_image')?.value">
-      <img [src]="getImageUrl(bookForm.get('cover_image')?.value)" alt="Current cover" width="100" height="100" />
+<div class="container my-5">
+
+  <h1 class="display-5 fw-bold" style="color: #2B3F56;">{{ id ? 'Edit Book' : 'Add Book' }}</h1>
+  <p class="text-muted">Edit and manage your personal library</p>
+
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="mt-4">
+    <div class="mb-3">
+      <label for="title" class="form-label" style="color: #2B3F56;">Title:</label>
+      <input id="title" formControlName="title" class="form-control" style="border-color: #2B3F56;"
+        placeholder="Enter book title">
+      <div *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched" class="text-danger small mt-1">
+        Title is required.
+      </div>
     </div>
-  </div>
-  <button type="submit" [disabled]="bookForm.invalid && !file">Save</button>
-  <button type="button" (click)="cancel()">Cancel</button>
-</form>
+    <div class="mb-3">
+      <label for="author" class="form-label" style="color: #2B3F56;">Author:</label>
+      <input id="author" formControlName="author" class="form-control" style="border-color: #2B3F56;"
+        placeholder="Enter author name">
+      <div *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched" class="text-danger small mt-1">
+        Author is required.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="year" class="form-label" style="color: #2B3F56;">Year:</label>
+      <input id="year" formControlName="year" type="number" class="form-control" style="border-color: #2B3F56;"
+        placeholder="Enter publication year" min="1500" max="2099" step="1" />
+      <div *ngIf="bookForm.get('year')?.invalid && bookForm.get('year')?.touched" class="text-danger small mt-1">
+        Year is required and must be a number.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="cover_image" class="form-label" style="color: #2B3F56;">Cover Image:</label>
+      <input id="cover_image" type="file" (change)="onFileChange($event)" accept="image/png,image/jpeg,image/jpg"
+        class="form-control" style="border-color: #2B3F56;">
+      <div *ngIf="id && bookForm.get('cover_image')?.value" class="mt-2">
+        <img [src]="getImageUrl(bookForm.get('cover_image')?.value)" alt="Current cover" class="img-fluid"
+          style="max-width: 100px; max-height: 100px;" />
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn d-flex align-items-center gap-2" style="background-color: #2B3F56; color: white;"
+        [disabled]="bookForm.invalid && !file">
+        <i class="bi bi-save"></i> Save
+      </button>
+      <button type="button" (click)="cancel()" class="btn d-flex align-items-center gap-2"
+        style="background-color: #e20c0c; color: white;">
+        <i class="bi bi-x-circle"></i> Cancel
+      </button>
+    </div>
+  </form>
+</div>

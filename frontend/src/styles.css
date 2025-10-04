@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+/* @tailwind directives require Tailwind CSS and PostCSS setup.
+   Uncomment these lines only if Tailwind CSS is properly configured. */
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
+
+/* shadcn minimal integration: import shadcn component styles (local) */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

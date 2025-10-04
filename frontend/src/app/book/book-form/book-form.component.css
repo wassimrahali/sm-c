@@ -1,0 +1,21 @@
+div {
+  margin-bottom: 10px;
+}
+label {
+  display: block;
+}
+input {
+  width: 100%;
+  padding: 5px;
+}
+button {
+  margin-right: 5px;
+}
+
+   .btn:hover {
+      filter: brightness(90%);
+    }
+    .form-control:focus {
+      border-color: #2B3F56;
+      box-shadow: 0 0 0 0.2rem rgba(43, 63, 86, 0.25);
+    }

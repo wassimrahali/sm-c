@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-book-form',
   templateUrl: './book-form.component.html',
-  styleUrls: ['./book-form.component.scss'],
+  styleUrls: ['./book-form.component.css'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule]
 })
@@ -16,7 +17,7 @@ export class BookFormComponent implements OnInit {
   bookForm: FormGroup;
   id?: number;
   file: File | null = null;
-  private apiUrl = 'http://localhost:5000';
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private fb: FormBuilder,

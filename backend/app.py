@@ -5,20 +5,26 @@ import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books.db'
+
+# ---------- PostgreSQL configuration (Neon) ----------
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    'postgresql://neondb_owner:npg_6Cb1JqYymahD@ep-crimson-moon-ad9o64dg-pooler.c-2.us-east-1.aws.neon.tech/'
+    'neondb?sslmode=require&channel_binding=require'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# ---------- File upload configuration ----------
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 db = SQLAlchemy(app)
 CORS(app)
 
-# Ensure upload folder exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
+# ---------- Database model ----------
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
@@ -35,13 +41,21 @@ class Book(db.Model):
             'cover_image': self.cover_image
         }
 
+# ---------- Initialize the database ----------
 with app.app_context():
     db.create_all()
 
+# ---------- Routes ----------
 @app.route('/books', methods=['GET'])
 def get_books():
     books = Book.query.all()
     return jsonify([book.to_dict() for book in books])
+
+@app.route('/books/<int:id>', methods=['GET'])
+def get_book(id):
+    book = Book.query.get_or_404(id)
+    return jsonify(book.to_dict())
+
 
 @app.route('/books', methods=['POST'])
 def add_book():
@@ -60,7 +74,7 @@ def add_book():
             filename = secure_filename(file.filename)
             cover_image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(cover_image_path)
-            cover_image_filename = filename  # Store only the filename
+            cover_image_filename = filename
 
     new_book = Book(
         title=request.form['title'],
@@ -91,10 +105,9 @@ def update_book(id):
             filename = secure_filename(file.filename)
             cover_image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(cover_image_path)
-            # Delete old image if it exists
             if book.cover_image and os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image)):
                 os.remove(os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image))
-            book.cover_image = filename  # Store only the filename
+            book.cover_image = filename
 
     db.session.commit()
     return jsonify(book.to_dict())
@@ -116,4 +129,4 @@ def get_image(filename):
     return jsonify({'error': 'Image not found'}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
